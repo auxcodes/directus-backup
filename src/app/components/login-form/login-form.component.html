@@ -1,0 +1,25 @@
+<section class="form-content">
+    <form (ngSubmit)="signIn()" #loginForm="ngForm">
+        <div class="row">
+            <label>Email:</label>
+            <input type="email"
+                   placeholder="youremail@example.com"
+                   [(ngModel)]="email"
+                   name="email" maxlength="254"
+                   onfocus="this.placeholder=''" onblur="this.placeholder='youremail@example.com'" required />
+        </div>
+        <div class="row">
+            <label>Password:</label>
+            <input placeholder="Password"
+                   [(ngModel)]="password"
+                   name="password" maxlength="70" type="password"
+                   onfocus="this.placeholder=''" onblur="this.placeholder='password'" required />
+        </div>
+        <div class="row">
+            <button [disabled]="!loginForm.form.valid" type="submit">
+                Sign In
+            </button>
+            <p *ngIf="errorMsg" class="text-danger">{{errorMsg}}</p>
+        </div>
+    </form>
+</section>

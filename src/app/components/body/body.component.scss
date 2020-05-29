@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  min-height: 90vh;
+
+  .hidden {
+      display: none;
+  }
+
+  .content {
+      width: 100%;
+  }
+}

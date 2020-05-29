@@ -1,52 +1,52 @@
 .form-content {
+  display: flex;
+  justify-content: center;
+
+  form {
+    max-width: 500px;
+    width: 50%;
+  }
+
+  .row {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    margin: 18px auto;
 
-    form {
-        max-width: 500px;
-        width: 50%;
+    input, textarea {
+      width: 100%;
+      max-width: 500px;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #e1e1e1;
+      box-sizing: border-box;
+      transition: box-shadow .15s;
+
+      &:focus {
+        box-shadow: 0 4px 8px #464646;
+      }
     }
 
-    .row {
-        display: flex;
-        flex-direction: column;
-        margin: 18px auto;
+    button {
+      max-width: 100px;
+      background-color: #c84c36;
+      color: white;
+      padding: 10px 10px;
+      margin: 0;
+      border: none;
+      cursor: pointer;
+      font-size: 1.125em;
+      box-shadow: 0 1px 3px #464646;
+      transition: box-shadow .15s;
 
-        input, textarea {
-            width: 100%;
-            max-width: 500px;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid $border-color;
-            box-sizing: border-box;
-            transition: box-shadow .15s;
+      &:hover {
+        text-decoration: underline;
+        box-shadow: 0 7px 15px #464646;
+      }
 
-            &:focus {
-                box-shadow: 0 4px 8px $btn-box-shadow-high;
-            }
-        }
-
-        button {
-            max-width: 100px;
-            background-color: #c84c36;
-            color: white;
-            padding: 10px 10px;
-            margin: 0;
-            border: none;
-            cursor: pointer;
-            font-size: 1.125em;
-            box-shadow: 0 1px 3px #464646;
-            transition: box-shadow .15s;
-
-            &:hover {
-                text-decoration: underline;
-                box-shadow: 0 7px 15px $btn-box-shadow-high;
-            }
-
-            &:active {
-                box-shadow: 0 1px 3px $btn-box-shadow-low;
-            }
-        }
+      &:active {
+        box-shadow: 0 1px 3px #464646;
+      }
     }
+  }
 }

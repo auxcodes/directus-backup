@@ -5,18 +5,19 @@
   form {
     max-width: 500px;
     width: 50%;
+    margin-top: 20px;
   }
 
   .row {
     display: flex;
-    flex-direction: column;
-    margin: 18px auto;
+    //flex-direction: column;
+    margin: 18px auto 0 auto;
 
     input, textarea {
       width: 100%;
       max-width: 500px;
       padding: 12px 20px;
-      margin: 8px 0;
+      margin: 0;
       display: inline-block;
       border: 1px solid #e1e1e1;
       box-sizing: border-box;
@@ -27,12 +28,18 @@
       }
     }
 
+    label {
+      padding: 13px 10px 10px 0;
+      text-align: end;
+      min-width: 70px;
+    }
+
     button {
       max-width: 100px;
-      background-color: #c84c36;
+      background-color: #0088ff;
       color: white;
       padding: 10px 10px;
-      margin: 0;
+      margin: 0 0 0 auto;
       border: none;
       cursor: pointer;
       font-size: 1.125em;

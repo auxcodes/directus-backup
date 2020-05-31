@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import DirectusSDK, { LoginCredentials } from '@directus/sdk-js';
+import DirectusSDK, { LoginCredentials, ClientOptions } from '@directus/sdk-js';
 import { BehaviorSubject } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
 
@@ -8,21 +8,32 @@ import { AuthenticationService } from './authentication.service';
 })
 export class ClientService {
 
-  client: DirectusSDK = new DirectusSDK({
-    url: '',
-    project: '',
-    storage: sessionStorage
-});
-isCmsReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  downloadClient: DirectusSDK = new DirectusSDK({ url: '', project: '', storage: sessionStorage });
+  uploadClient: DirectusSDK = new DirectusSDK({ url: '', project: '', storage: sessionStorage });
 
-constructor(private authService: AuthenticationService) {
-}
+  downloadReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  uploadReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-async login(credentials: LoginCredentials) {
-    this.authService.login(this.client, credentials).then(() => this.isCmsReady.next(this.client.loggedIn));
-}
+  constructor(private authService: AuthenticationService) {
+  }
 
-logout() {
-    this.authService.logout(this.client);
-}
+  async downloadLogin(options: ClientOptions, credentials: LoginCredentials) {
+    this.downloadClient = new DirectusSDK(options);
+    this.authService.login(this.downloadClient, credentials).then(() => this.downloadReady.next(this.downloadClient.loggedIn));
+  }
+
+  async uploadLogin(options: ClientOptions, credentials: LoginCredentials) {
+    this.uploadClient = new DirectusSDK(options);
+    this.authService.login(this.uploadClient, credentials).then(() => this.downloadReady.next(this.uploadClient.loggedIn));
+  }
+
+  downloadLogout() {
+    this.authService.logout(this.downloadClient);
+    this.downloadReady.next(false);
+  }
+
+  uploadLogout() {
+    this.authService.logout(this.uploadClient);
+    this.uploadReady.next(false);
+  }
 }

@@ -9,22 +9,22 @@ export class CollectionsService {
 
   async getCollections() {
       try {
-          return this.clientService.client.getCollections();
+          return this.clientService.client().getCollections();
       }
-      catch (e) {
-          console.log('Error getting collection: ', e);
-          return [];
+      catch (error) {
+          console.log('Error getting collection: ', error);
+        return [{ error: error}];
       }
   }
 
   async getCollection(name: string) {
       let collection: any;
       try {
-          return collection = this.clientService.client.getCollection(name);
+          return collection = this.clientService.client().getCollection(name);
       }
-      catch (e) {
-          console.log('Error getting collection: ', e);
-          return;
+      catch (error) {
+          console.log('Error getting collection: ', error);
+          return error;
       }
   }
 }

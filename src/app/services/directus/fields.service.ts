@@ -10,7 +10,7 @@ export class FieldsService {
 
   async getFields(collection: string) {
       try {
-          return this.clientService.client.getFields(collection);
+          return this.clientService.client().getFields(collection);
       }
       catch (e) {
           console.log('Error getting fields: ', e);
@@ -20,7 +20,7 @@ export class FieldsService {
 
   async getField(collection: string, fieldName: string, options: object) {
       try {
-          return this.clientService.client.getField(collection, fieldName, options);
+          return this.clientService.client().getField(collection, fieldName, options);
       }
       catch (e) {
           console.log('Error getting field: ', e);

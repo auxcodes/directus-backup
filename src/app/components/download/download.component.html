@@ -1,1 +1,7 @@
-<app-login-form></app-login-form>
+<app-login-form *ngIf="!loggedIn"></app-login-form>
+<div *ngIf="loggedIn">
+  <button (click)="onGetCollections()">Collections</button>
+  <div>
+    <span *ngFor="let item of collections">Name: {{item.collection}} Hidden: {{item.hidden}}</span><br />
+  </div>
+</div>

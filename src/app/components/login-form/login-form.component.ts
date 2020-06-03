@@ -11,7 +11,7 @@ import { ProjectContentService } from '../../services/project-content.service';
 })
 export class LoginFormComponent implements OnInit {
 
-  url: string = 'https://ec2-52-12-61-199.us-west-2.compute.amazonaws.com';
+  url: string = 'https://ec2-54-218-39-209.us-west-2.compute.amazonaws.com';
   project: string = 'rca';
   email: string = 'borgosity@gmail.com';
   password: string;

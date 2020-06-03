@@ -18,9 +18,8 @@ export class CollectionsService {
   }
 
   async getCollection(name: string) {
-      let collection: any;
       try {
-          return collection = this.clientService.client().getCollection(name);
+          return this.clientService.client().getCollection(name);
       }
       catch (error) {
           console.log('Error getting collection: ', error);

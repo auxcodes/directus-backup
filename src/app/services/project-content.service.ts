@@ -4,7 +4,7 @@ import { Project } from '../shared/interfaces/project';
 import { CollectionsService } from './directus/collections.service';
 import { ClientService } from './directus/client.service';
 import { DataType } from '../shared/enums/data-type.enum';
-import { Collection } from '@directus/sdk-js';
+import { ItemsService } from './directus/items.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,20 +15,34 @@ export class ProjectContentService {
 
   constructor(
     private clientService: ClientService,
-    private collectionService: CollectionsService
+    private collectionService: CollectionsService,
+    private itemService: ItemsService
   ) { }
 
-  async collections(): Promise<Collection[]> {
-    let collections = [];
+  async collections(): Promise<any> {
+    let collections;
     await this.collectionService.getCollections()
       .then(results => {
         collections = results;
       })
       .catch(error => {
-        console.error('Error getting collections: ', error);
+        console.error('Content Service - Error getting collections: ', error);
         collections = error;
       });
     return collections;
+  }
+
+  async items(collection: string): Promise<any> {
+    let items;
+    await this.itemService.getItems(collection)
+      .then(results => {
+        items = results;
+      })
+      .catch(error => {
+        console.error('Content Service - Error getting items: ', error);
+        items = error;
+      });
+    return items;
   }
 
 }

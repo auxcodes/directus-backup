@@ -1,7 +1,26 @@
 <app-login-form *ngIf="!loggedIn"></app-login-form>
-<div *ngIf="loggedIn">
-  <button (click)="onGetCollections()">Collections</button>
-  <div>
-    <span *ngFor="let item of collections">Name: {{item.collection}} Hidden: {{item.hidden}}</span><br />
+<div class="container" *ngIf="loggedIn">
+
+  <div class="results">
+    <div class="column">
+      <span class="row title">
+        <input type="checkbox" (change)="onSelectAll()" />
+        <button (click)="onGetCollections()">Collections</button>
+      </span>
+      <span id="collections" class="row" *ngFor="let collection of collections; let i = index">
+        <input type="checkbox" [id]="i" [(ngModel)]="allCollections" />
+        <span class="text">{{collection?.collection}}</span>
+      </span>
+    </div>
+  </div>
+  <div class="results">
+    <div class="column">
+      <span class="row title">
+        <button (click)="onGetItems()">Items</button>
+      </span>
+      <span id="fields" class="row" *ngFor="let item of items; let i = index">
+        <span class="text">{{item.name}}: {{item.items.length}}</span>
+      </span>
+    </div>
   </div>
 </div>

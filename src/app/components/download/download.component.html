@@ -1,26 +1,13 @@
 <app-login-form *ngIf="!loggedIn"></app-login-form>
 <div class="container" *ngIf="loggedIn">
-
   <div class="results">
-    <div class="column">
-      <span class="row title">
-        <input type="checkbox" (change)="onSelectAll()" />
-        <button (click)="onGetCollections()">Collections</button>
-      </span>
-      <span id="collections" class="row" *ngFor="let collection of collections; let i = index">
-        <input type="checkbox" [id]="i" [(ngModel)]="allCollections" />
-        <span class="text">{{collection?.collection}}</span>
-      </span>
-    </div>
-  </div>
-  <div class="results">
-    <div class="column">
-      <span class="row title">
-        <button (click)="onGetItems()">Items</button>
-      </span>
-      <span id="fields" class="row" *ngFor="let item of items; let i = index">
-        <span class="text">{{item.name}}: {{item.items.length}}</span>
-      </span>
-    </div>
+    <input class="title cb" type="checkbox" (change)="onSelectAll()" />
+    <button class="title title-btn" (click)="onGetCollections()">Collections</button>
+    <button class="title title-btn" (click)="onGetItems()">Items</button>
+    <ng-container id="collections" class="row" *ngFor="let collection of collections; let i = index">
+      <input class="result cb" type="checkbox" [id]="i" [(ngModel)]="allCollections" />
+      <span class="result">{{collection?.name}}</span>
+      <span class="result">{{collection?.items.length}}</span>
+    </ng-container>
   </div>
 </div>

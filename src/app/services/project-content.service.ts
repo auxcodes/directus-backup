@@ -39,7 +39,7 @@ export class ProjectContentService {
         items = results;
       })
       .catch(error => {
-        console.error('Content Service - Error getting items: ', error);
+        console.error('Content Service - Error getting items for: ', collection, ' Error: ', error);
         items = error;
       });
     return items;

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Collection, Item } from '@directus/sdk-js';
 import { ClientService } from '../../services/directus/client.service';
 import { ProjectContentService } from '../../services/project-content.service';
+import { Collection } from '../../shared/interfaces/collection';
 
 @Component({
   selector: 'app-download',
@@ -11,7 +11,7 @@ import { ProjectContentService } from '../../services/project-content.service';
 export class DownloadComponent implements OnInit {
 
   loggedIn = false;
-  collections = [];
+  collections: Collection[] = [];
   items = [];
   allCollections = false;
 
@@ -27,8 +27,10 @@ export class DownloadComponent implements OnInit {
     this.collections = [];
     this.contentService.collections()
       .then(result => {
-        this.collections = result.data;
-        console.log('collections: ', this.collections);
+        result.data.map(collection => {
+          this.collections.push({ name: collection.collection, fields: collection.fields, items: []})
+        });
+
       })
       .catch(error => console.error('Error getting collections: ', error));
   }
@@ -36,14 +38,15 @@ export class DownloadComponent implements OnInit {
   onGetItems() {
     this.items = [];
     for (const collection of this.collections) {
-      this.contentService.items(collection.collection)
+      this.contentService.items(collection.name)
         .then(result => {
           if (result.data) {
-            this.items.push({ name: collection.collection, items: result.data });
-            console.log('items: ', { name: collection.collection, items: result.data });
+            const index = this.collections.findIndex(coll => collection.name === coll.name);
+            this.collections[index].items = result.data;
+            console.log('items: ', { name: collection.name, items: result.data });
           }
           else {
-            this.items.push({ name: collection.collection, items: [] });
+            this.items.push({ name: collection.name, items: [] });
           }
         })
         .catch(error => console.error('Error getting items: ', error));

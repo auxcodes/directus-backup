@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ClientService } from '../../services/directus/client.service';
 import { PageStateService } from '../../services/page-state.service';
-import { ProjectContentService } from '../../services/project-content.service';
 
 @Component({
   selector: 'app-login-form',
@@ -11,9 +10,6 @@ import { ProjectContentService } from '../../services/project-content.service';
 })
 export class LoginFormComponent implements OnInit {
 
-  url: string = 'https://ec2-54-218-39-209.us-west-2.compute.amazonaws.com';
-  project: string = 'rca';
-  email: string = 'borgosity@gmail.com';
   password: string;
   errorMsg: string;
 

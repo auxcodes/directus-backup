@@ -12,8 +12,7 @@ export class DownloadComponent implements OnInit {
 
   loggedIn = false;
   collections: Collection[] = [];
-  items = [];
-  allCollections = false;
+  allSelected = false;
 
   constructor(
     private clientService: ClientService,
@@ -28,7 +27,7 @@ export class DownloadComponent implements OnInit {
     this.contentService.collections()
       .then(result => {
         result.data.map(collection => {
-          this.collections.push({ name: collection.collection, fields: collection.fields, items: []})
+          this.collections.push({ name: collection.collection, fields: collection.fields, selected: false, items: null, error: '-' });
         });
 
       })
@@ -36,25 +35,37 @@ export class DownloadComponent implements OnInit {
   }
 
   onGetItems() {
-    this.items = [];
     for (const collection of this.collections) {
-      this.contentService.items(collection.name)
-        .then(result => {
-          if (result.data) {
+      collection.items = null;
+      collection.error = '-';
+      if (collection.selected) {
+        this.contentService.items(collection.name)
+          .then(result => {
             const index = this.collections.findIndex(coll => collection.name === coll.name);
-            this.collections[index].items = result.data;
-            console.log('items: ', { name: collection.name, items: result.data });
-          }
-          else {
-            this.items.push({ name: collection.name, items: [] });
-          }
-        })
-        .catch(error => console.error('Error getting items: ', error));
+            if (result.data) {      
+              this.collections[index].items = result.data;
+              console.log('items: ', { name: collection.name, items: result.data });
+            }
+            else {
+              this.collections[index].error = 'Not Found';
+            }
+          })
+          .catch(error => console.error('Error getting items: ', error));
+      }
     }
   }
 
-  onSelectAll() {
-    this.allCollections = !this.allCollections;
+  onSelectAll(checked) {
+    this.allSelected = checked;
+    this.collections.forEach(sid => sid.selected = checked);
+    this.contentService.selectedCollections.next(this.collections);
+  }
+
+  onSelection(id) {
+    const sid = this.collections.findIndex(coll => coll.name === id);
+    this.collections[sid].selected = !this.collections[sid].selected;
+    this.allSelected = this.allSelected ? false : this.allSelected;
+    this.contentService.selectedCollections.next(this.collections);
   }
 
 }

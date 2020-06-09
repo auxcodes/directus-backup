@@ -1,13 +1,13 @@
 <app-login-form *ngIf="!loggedIn"></app-login-form>
 <div class="container" *ngIf="loggedIn">
   <div class="results">
-    <input class="title cb" type="checkbox" (change)="onSelectAll()" />
+    <input class="title cb" type="checkbox" [checked]="allSelected" (change)="onSelectAll($event.target.checked)" />
     <button class="title title-btn" (click)="onGetCollections()">Collections</button>
     <button class="title title-btn" (click)="onGetItems()">Items</button>
     <ng-container id="collections" class="row" *ngFor="let collection of collections; let i = index">
-      <input class="result cb" type="checkbox" [id]="i" [(ngModel)]="allCollections" />
+      <input class="result cb" type="checkbox" [id]="collection.name" [checked]="collection.selected" (change)="onSelection($event.target.id)" />
       <span class="result">{{collection?.name}}</span>
-      <span class="result">{{collection?.items.length}}</span>
+      <span class="result">{{collection?.items ? collection?.items.length : collection?.error}}</span>
     </ng-container>
   </div>
 </div>

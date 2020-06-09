@@ -5,6 +5,7 @@ import { CollectionsService } from './directus/collections.service';
 import { ClientService } from './directus/client.service';
 import { DataType } from '../shared/enums/data-type.enum';
 import { ItemsService } from './directus/items.service';
+import { Collection } from '../shared/interfaces/collection';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,8 @@ import { ItemsService } from './directus/items.service';
 export class ProjectContentService {
 
   downloadProject: BehaviorSubject<Project> = new BehaviorSubject<Project>({ dataType: DataType.Download });
+  selectedCollections: BehaviorSubject<Collection[]> = new BehaviorSubject<Collection[]>([]);
+
 
   constructor(
     private clientService: ClientService,

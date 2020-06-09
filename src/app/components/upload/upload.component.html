@@ -1,1 +1,11 @@
-<app-login-form></app-login-form>
+<div class="container">
+  <div class="results">
+    <label class="title">Selected Collections</label>
+    <label class="title">Items</label>
+    <ng-container id="collections" class="row" *ngFor="let collection of collections; let i = index">
+      <span class="result" [ngClass]="{'ignored' : !collection?.selected}">{{collection?.name}}</span>
+      <span class="result" [ngClass]="{'ignored' : !collection?.selected}">{{collection?.items ? collection?.items.length : collection?.error}}</span>
+    </ng-container>
+  </div>
+</div>
+<app-login-form *ngIf="!loggedIn"></app-login-form>

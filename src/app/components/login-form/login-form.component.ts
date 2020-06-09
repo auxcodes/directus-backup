@@ -10,6 +10,9 @@ import { PageStateService } from '../../services/page-state.service';
 })
 export class LoginFormComponent implements OnInit {
 
+  url: string;
+  project: string;
+  email: string;
   password: string;
   errorMsg: string;
 

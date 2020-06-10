@@ -8,4 +8,4 @@
     </ng-container>
   </div>
 </div>
-<app-login-form *ngIf="!loggedIn"></app-login-form>
+<app-login-form [loginConfig]="ulLoginConfig" (loggedInConfig)="onLoggedIn($event)" *ngIf="!loggedIn"></app-login-form>

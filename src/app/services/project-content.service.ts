@@ -6,15 +6,16 @@ import { ClientService } from './directus/client.service';
 import { DataType } from '../shared/enums/data-type.enum';
 import { ItemsService } from './directus/items.service';
 import { Collection } from '../shared/interfaces/collection';
+import { BackupConfig } from '../shared/interfaces/backup-config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectContentService {
 
+  backupConfig: BehaviorSubject<BackupConfig> = new BehaviorSubject<BackupConfig>({});
   downloadProject: BehaviorSubject<Project> = new BehaviorSubject<Project>({ dataType: DataType.Download });
   selectedCollections: BehaviorSubject<Collection[]> = new BehaviorSubject<Collection[]>([]);
-
 
   constructor(
     private clientService: ClientService,
@@ -46,6 +47,10 @@ export class ProjectContentService {
         items = error;
       });
     return items;
+  }
+
+  saveConfig() {
+    localStorage.setItem('directus-backup', JSON.stringify(this.backupConfig.value));
   }
 
 }

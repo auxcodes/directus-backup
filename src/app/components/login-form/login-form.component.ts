@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ClientService } from '../../services/directus/client.service';
 import { PageStateService } from '../../services/page-state.service';
+import { LoginConfig } from '../../shared/interfaces/login-config';
 
 @Component({
   selector: 'app-login-form',
@@ -15,6 +16,9 @@ export class LoginFormComponent implements OnInit {
   email: string;
   password: string;
   errorMsg: string;
+
+  @Input() loginConfig: LoginConfig;
+  @Output() loggedInConfig: EventEmitter<LoginConfig> = new EventEmitter();
 
   constructor(
     private clientService: ClientService,
@@ -31,6 +35,14 @@ export class LoginFormComponent implements OnInit {
       this.clientService.uploadLogout();
     }
     this.titleService.setTitle('Login');
+    this.setLoginConfig();
+  }
+
+  setLoginConfig() {
+    console.log('login config: ', this.loginConfig);
+    this.url = this.loginConfig.url;
+    this.project = this.loginConfig.project;
+    this.email = this.loginConfig.email;
   }
 
   signIn() {
@@ -41,6 +53,7 @@ export class LoginFormComponent implements OnInit {
       )
         .then(() => {
           this.password = '';
+          this.loggedInConfig.emit({ url: this.url, project: this.project, email: this.email });
           console.log('download logged in');
         })
         .catch(() => this.errorMsg = 'Download login attempt was unsuccessful');
@@ -52,6 +65,7 @@ export class LoginFormComponent implements OnInit {
       )
         .then(() => {
           this.password = '';
+          this.loggedInConfig.emit({ url: this.url, project: this.project, email: this.email });
           console.log('upload logged in');
         })
         .catch(() => this.errorMsg = 'Upload login attempt was unsuccessful');

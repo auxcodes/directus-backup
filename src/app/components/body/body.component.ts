@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PageStateService } from '../../services/page-state.service';
+import { BackupConfig } from '../../shared/interfaces/backup-config';
+import { ProjectContentService } from '../../services/project-content.service';
 
 @Component({
   selector: 'app-body',
@@ -8,7 +10,10 @@ import { PageStateService } from '../../services/page-state.service';
 })
 export class BodyComponent implements OnInit {
 
-  constructor(private tabState: PageStateService) { }
+  constructor(
+    private tabState: PageStateService,
+    private contentService: ProjectContentService
+  ) { }
 
   selected = {};
 
@@ -16,5 +21,20 @@ export class BodyComponent implements OnInit {
     this.tabState.currentTab.subscribe(activeTab => {
       this.selected = activeTab;
     });
+    this.checkStorage();
+  }
+
+  checkStorage() {
+    if (localStorage.getItem('directus-backup')) {
+      console.log('local storage: ', localStorage.getItem('directus-backup'));
+      this.contentService.backupConfig.next(JSON.parse(localStorage.getItem('directus-backup')));
+    }
+    else {
+      this.contentService.backupConfig.next({
+        downloadLogin: { url: '', project: '', email: '' },
+        uploadLogin: { url: '', project: '', email: ''}
+      });
+      console.log('No local storage: X');
+    }
   }
 }

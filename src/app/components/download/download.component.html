@@ -1,4 +1,4 @@
-<app-login-form *ngIf="!loggedIn"></app-login-form>
+<app-login-form [loginConfig]="dlLoginConfig" (loggedInConfig)="onLoggedIn($event)" *ngIf="!loggedIn"></app-login-form>
 <div class="container" *ngIf="loggedIn">
   <div class="results">
     <input class="title cb" type="checkbox" [checked]="allSelected" (change)="onSelectAll($event.target.checked)" />

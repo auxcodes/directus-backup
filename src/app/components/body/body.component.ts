@@ -26,7 +26,6 @@ export class BodyComponent implements OnInit {
 
   checkStorage() {
     if (localStorage.getItem('directus-backup')) {
-      console.log('local storage: ', localStorage.getItem('directus-backup'));
       this.contentService.backupConfig.next(JSON.parse(localStorage.getItem('directus-backup')));
     }
     else {
@@ -34,7 +33,6 @@ export class BodyComponent implements OnInit {
         downloadLogin: { url: '', project: '', email: '' },
         uploadLogin: { url: '', project: '', email: ''}
       });
-      console.log('No local storage: X');
     }
   }
 }

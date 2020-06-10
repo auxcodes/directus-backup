@@ -1,13 +1,26 @@
 .container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin: 20px auto;
-  width: 500px;
+  width: 100%;
+
+  .connection {
+    display: flex;
+    width: auto;
+    border: 1px solid #666;
+    margin: 10px auto;
+
+    span {
+      padding: 10px 16px;
+      margin: auto;
+    }
+  }
 
   .results {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    width: 100%;
+    width: 500px;
+    margin: auto;
 
     .title {
       border-bottom: 3px double #e1e1e1;

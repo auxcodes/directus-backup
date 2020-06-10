@@ -23,13 +23,11 @@ export class UploadComponent implements OnInit {
     this.clientService.uploadReady.subscribe(ready => this.loggedIn = ready);
     this.contentService.selectedCollections.subscribe(selectedCollections => this.collections = selectedCollections);
     this.contentService.backupConfig.subscribe(config => {
-      this.ulLoginConfig = config.downloadLogin;
-      console.log('UL Login Config: ', this.ulLoginConfig);
+      this.ulLoginConfig = config.uploadLogin;
     });
   }
 
   onLoggedIn(loginConfig: LoginConfig) {
-    console.log('Upload login details: ', loginConfig);
     this.contentService.backupConfig.getValue().uploadLogin = loginConfig;
     this.contentService.saveConfig();
   }

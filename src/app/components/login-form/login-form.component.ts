@@ -39,7 +39,6 @@ export class LoginFormComponent implements OnInit {
   }
 
   setLoginConfig() {
-    console.log('login config: ', this.loginConfig);
     this.url = this.loginConfig.url;
     this.project = this.loginConfig.project;
     this.email = this.loginConfig.email;
@@ -54,7 +53,6 @@ export class LoginFormComponent implements OnInit {
         .then(() => {
           this.password = '';
           this.loggedInConfig.emit({ url: this.url, project: this.project, email: this.email });
-          console.log('download logged in');
         })
         .catch(() => this.errorMsg = 'Download login attempt was unsuccessful');
     }
@@ -66,7 +64,6 @@ export class LoginFormComponent implements OnInit {
         .then(() => {
           this.password = '';
           this.loggedInConfig.emit({ url: this.url, project: this.project, email: this.email });
-          console.log('upload logged in');
         })
         .catch(() => this.errorMsg = 'Upload login attempt was unsuccessful');
     }

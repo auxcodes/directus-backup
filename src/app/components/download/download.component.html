@@ -1,5 +1,10 @@
 <app-login-form [loginConfig]="dlLoginConfig" (loggedInConfig)="onLoggedIn($event)" *ngIf="!loggedIn"></app-login-form>
 <div class="container" *ngIf="loggedIn">
+  <div class="connection" >
+    <span>{{dlLoginConfig?.url}}</span>
+    <span>{{dlLoginConfig?.project}}</span>
+    <span>{{dlLoginConfig?.email}}</span> 
+  </div>
   <div class="results">
     <input class="title cb" type="checkbox" [checked]="allSelected" (change)="onSelectAll($event.target.checked)" />
     <button class="title title-btn" (click)="onGetCollections()">Collections</button>

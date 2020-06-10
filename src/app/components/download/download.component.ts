@@ -3,8 +3,6 @@ import { ClientService } from '../../services/directus/client.service';
 import { ProjectContentService } from '../../services/project-content.service';
 import { Collection } from '../../shared/interfaces/collection';
 import { LoginConfig } from '../../shared/interfaces/login-config';
-import { environment } from '../../../environments/environment';
-import { BackupConfig } from '../../shared/interfaces/backup-config';
 
 @Component({
   selector: 'app-download',
@@ -26,12 +24,10 @@ export class DownloadComponent implements OnInit {
     this.clientService.downloadReady.subscribe(ready => this.loggedIn = ready);
     this.contentService.backupConfig.subscribe(config => {
       this.dlLoginConfig = config.downloadLogin;
-      console.log('DL Login Config: ', this.dlLoginConfig);
     });
   }
 
   onLoggedIn(loginConfig: LoginConfig) {
-    console.log('Download login details: ', loginConfig);
     this.contentService.backupConfig.getValue().downloadLogin = loginConfig;
     this.contentService.saveConfig();
   }

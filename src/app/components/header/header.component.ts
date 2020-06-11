@@ -19,7 +19,6 @@ export class HeaderComponent implements OnInit {
   }
 
   onSelected(selection: string) {
-    console.log(selection);
     this.stateService.currentTab.next(selection);
   }
 

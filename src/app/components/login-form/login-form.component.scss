@@ -1,11 +1,32 @@
+.connection {
+  display: flex;
+  width: auto;
+  border: 1px solid #666;
+  margin: 10px auto;
+
+  span {
+    padding: 10px 16px;
+    margin: auto;
+  }
+}
+
 .form-content {
   display: flex;
   justify-content: center;
+
 
   form {
     max-width: 500px;
     width: 100%;
     margin-top: 20px;
+
+    .prompt {
+      width: 100%;
+      display: block;
+      border-bottom: 1px solid #e1e1e1;
+      padding: 10px;
+      text-align: center;
+    }
   }
 
   .row {

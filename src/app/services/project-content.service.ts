@@ -14,7 +14,7 @@ import { BackupConfig } from '../shared/interfaces/backup-config';
 export class ProjectContentService {
 
   backupConfig: BehaviorSubject<BackupConfig> = new BehaviorSubject<BackupConfig>({});
-  downloadProject: BehaviorSubject<Project> = new BehaviorSubject<Project>({ dataType: DataType.Download });
+  downloadedProject: BehaviorSubject<Project> = new BehaviorSubject<Project>({ });
   selectedCollections: BehaviorSubject<Collection[]> = new BehaviorSubject<Collection[]>([]);
 
   constructor(
@@ -51,6 +51,19 @@ export class ProjectContentService {
 
   saveConfig() {
     localStorage.setItem('directus-backup', JSON.stringify(this.backupConfig.value));
+    this.loadConfig();
+  }
+
+  loadConfig() {
+    if (localStorage.getItem('directus-backup')) {
+      this.backupConfig.next(JSON.parse(localStorage.getItem('directus-backup')));
+    }
+    else {
+      this.backupConfig.next({
+        downloadLogin: { url: '', project: '', email: '', server: DataType.Download },
+        uploadLogin: { url: '', project: '', email: '', server: DataType.Upload }
+      });
+    }
   }
 
 }

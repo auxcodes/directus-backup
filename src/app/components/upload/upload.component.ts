@@ -3,6 +3,7 @@ import { Collection } from '../../shared/interfaces/collection';
 import { ClientService } from '../../services/directus/client.service';
 import { ProjectContentService } from '../../services/project-content.service';
 import { LoginConfig } from '../../shared/interfaces/login-config';
+import { DataType } from '../../shared/enums/data-type.enum';
 
 @Component({
   selector: 'app-upload',
@@ -13,7 +14,7 @@ export class UploadComponent implements OnInit {
 
   loggedIn = false;
   collections: Collection[] = [];
-  ulLoginConfig: LoginConfig = { url: '', project: '', email: '' };
+  ulLoginConfig: LoginConfig = { url: '', project: '', email: '', server: DataType.Upload };
 
   constructor(
     private clientService: ClientService,
@@ -28,8 +29,18 @@ export class UploadComponent implements OnInit {
   }
 
   onLoggedIn(loginConfig: LoginConfig) {
+    console.log('ul logged in: ', loginConfig);
+
     this.contentService.backupConfig.getValue().uploadLogin = loginConfig;
     this.contentService.saveConfig();
+  }
+
+  onUpload() {
+    console.log('Upload to server.');
+  }
+
+  onLogout() {
+    this.clientService.uploadLogout();
   }
 
 }

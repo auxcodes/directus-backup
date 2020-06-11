@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientService } from '../../services/directus/client.service';
 import { ProjectContentService } from '../../services/project-content.service';
+import { FileManagerService } from '../../services/utils/file-manager.service';
 import { Collection } from '../../shared/interfaces/collection';
 import { LoginConfig } from '../../shared/interfaces/login-config';
+import { DataType } from '../../shared/enums/data-type.enum';
 
 @Component({
   selector: 'app-download',
@@ -14,11 +16,13 @@ export class DownloadComponent implements OnInit {
   loggedIn = false;
   collections: Collection[] = [];
   allSelected = false;
-  dlLoginConfig: LoginConfig = { url: '', project: '', email: ''};
+  dlLoginConfig: LoginConfig = { url: '', project: '', email: '', server: DataType.Download };
 
   constructor(
     private clientService: ClientService,
-    private contentService: ProjectContentService) { }
+    private contentService: ProjectContentService,
+    private fileService: FileManagerService
+  ) { }
 
   ngOnInit() {
     this.clientService.downloadReady.subscribe(ready => this.loggedIn = ready);
@@ -28,8 +32,10 @@ export class DownloadComponent implements OnInit {
   }
 
   onLoggedIn(loginConfig: LoginConfig) {
+    console.log('dl logged in: ', loginConfig);
     this.contentService.backupConfig.getValue().downloadLogin = loginConfig;
     this.contentService.saveConfig();
+    this.contentService.downloadedProject.next({ name: loginConfig.project, url: loginConfig.url });
   }
 
   onGetCollections() {
@@ -52,7 +58,7 @@ export class DownloadComponent implements OnInit {
         this.contentService.items(collection.name)
           .then(result => {
             const index = this.collections.findIndex(coll => collection.name === coll.name);
-            if (result.data) {      
+            if (result.data) {
               this.collections[index].items = result.data;
               console.log('items: ', { name: collection.name, items: result.data });
             }
@@ -68,14 +74,28 @@ export class DownloadComponent implements OnInit {
   onSelectAll(checked) {
     this.allSelected = checked;
     this.collections.forEach(sid => sid.selected = checked);
-    this.contentService.selectedCollections.next(this.collections);
+    this.updateProjectContent();
   }
 
   onSelection(id) {
     const sid = this.collections.findIndex(coll => coll.name === id);
     this.collections[sid].selected = !this.collections[sid].selected;
     this.allSelected = this.allSelected ? false : this.allSelected;
+    this.updateProjectContent();
+  }
+
+  updateProjectContent() {
+    this.contentService.selectedCollections.next(this.collections);
+    this.contentService.downloadedProject.getValue().collections = this.collections;
+  }
+
+  onLogout() {
+    this.collections = [];
+    this.allSelected = false;
     this.contentService.selectedCollections.next(this.collections);
   }
 
+  onSave() {
+    this.fileService.saveToFile();
+  }
 }

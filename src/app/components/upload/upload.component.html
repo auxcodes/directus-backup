@@ -1,11 +1,10 @@
-
   <div class="container">
-    <div class="connection" *ngIf="loggedIn">
-      <span>{{ulLoginConfig?.url}}</span>
-      <span>{{ulLoginConfig?.project}}</span>
-      <span>{{ulLoginConfig?.email}}</span>
-    </div>
-    <div class="results">
+    <app-login-form [loginConfig]="ulLoginConfig"
+                    (loggedInConfig)="onLoggedIn($event)"
+                    (loggedOut)="onLogout($event)"></app-login-form>
+  </div>
+  <div class="container" *ngIf="collections.length > 0">
+    <div class="results" >
       <label class="title">Selected Collections</label>
       <label class="title">Items</label>
       <ng-container id="collections" class="row" *ngFor="let collection of collections; let i = index">
@@ -13,5 +12,7 @@
         <span class="result" [ngClass]="{'ignored' : !collection?.selected}">{{collection?.items ? collection?.items.length : collection?.error}}</span>
       </ng-container>
     </div>
+    <div class="upload-options">
+      <button (click)="onUpload()">Upload</button>
+    </div>
   </div>
-<app-login-form [loginConfig]="ulLoginConfig" (loggedInConfig)="onLoggedIn($event)" *ngIf="!loggedIn"></app-login-form>

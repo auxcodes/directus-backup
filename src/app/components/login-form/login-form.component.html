@@ -1,5 +1,12 @@
-<section class="form-content">
-  <form (ngSubmit)="signIn()" #loginForm="ngForm">
+<section class="form-content" >
+  <div class="connection" *ngIf="loggedIn">
+    <span>{{url}}</span>
+    <span>{{project}}</span>
+    <span>{{email}}</span>
+    <button (click)="onLogout()">Logout</button>
+  </div>
+  <form (ngSubmit)="signIn()" #loginForm="ngForm" *ngIf="!loggedIn">
+    <span class="prompt">Login to Directus API server to {{serverType}}</span>
     <div class="row">
       <label>URL:</label>
       <input type="url"
@@ -33,7 +40,7 @@
     </div>
     <div class="row">
       <button [disabled]="!loginForm.form.valid" type="submit">
-        Sign In
+        Login
       </button>
       <p *ngIf="errorMsg" class="text-danger">{{errorMsg}}</p>
     </div>

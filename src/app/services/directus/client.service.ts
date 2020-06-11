@@ -3,6 +3,7 @@ import DirectusSDK, { LoginCredentials, ClientOptions } from '@directus/sdk-js';
 import { BehaviorSubject } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
 import { PageStateService } from '../page-state.service';
+import { DataType } from '../../shared/enums/data-type.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -21,14 +22,35 @@ export class ClientService {
   ) {
   }
 
+  async login(options: ClientOptions, credentials: LoginCredentials, dataType: DataType) {
+    console.log('client login: ', dataType, 'download == ', DataType.Download);
+    if (dataType === DataType.Download) {
+      await this.downloadLogin(options, credentials);
+    }
+    if (dataType === DataType.Upload) {
+      await this.uploadLogin(options, credentials);
+    }
+  }
+
   async downloadLogin(options: ClientOptions, credentials: LoginCredentials) {
     this.downloadClient = new DirectusSDK(options);
-    this.authService.login(this.downloadClient, credentials).then(() => this.downloadReady.next(this.downloadClient.loggedIn));
+    this.authService.login(this.downloadClient, credentials)
+      .then(() => this.downloadReady.next(this.downloadClient.loggedIn));
   }
 
   async uploadLogin(options: ClientOptions, credentials: LoginCredentials) {
     this.uploadClient = new DirectusSDK(options);
-    this.authService.login(this.uploadClient, credentials).then(() => this.uploadReady.next(this.uploadClient.loggedIn));
+    this.authService.login(this.uploadClient, credentials)
+      .then(() => this.uploadReady.next(this.uploadClient.loggedIn));
+  }
+
+  logout(dataType: DataType) {
+    if (dataType === DataType.Download) {
+      this.downloadLogout();
+    }
+    if (dataType === DataType.Upload) {
+      this.uploadLogout();
+    }
   }
 
   downloadLogout() {

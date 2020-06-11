@@ -1,8 +1,8 @@
 import { DataType } from '../enums/data-type.enum';
+import { Collection } from './collection';
 
 export interface Project {
-  dataType: DataType;
   name?: string;
   url?: string;
-  collections?: string[];
+  collections?: Collection[];
 }

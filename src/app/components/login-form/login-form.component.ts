@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ClientService } from '../../services/directus/client.service';
 import { PageStateService } from '../../services/page-state.service';
 import { LoginConfig } from '../../shared/interfaces/login-config';
+import { DataType } from '../../shared/enums/data-type.enum';
 
 @Component({
   selector: 'app-login-form',
@@ -15,10 +16,14 @@ export class LoginFormComponent implements OnInit {
   project: string;
   email: string;
   password: string;
+
   errorMsg: string;
+  loggedIn = false;
+  serverType = 'download';
 
   @Input() loginConfig: LoginConfig;
   @Output() loggedInConfig: EventEmitter<LoginConfig> = new EventEmitter();
+  @Output() loggedOut: EventEmitter<boolean> = new EventEmitter(); 
 
   constructor(
     private clientService: ClientService,
@@ -28,13 +33,19 @@ export class LoginFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.stateService.currentTab.value === 'download') {
+    if (this.loginConfig.server === DataType.Download) {
       this.clientService.downloadLogout();
+      this.clientService.downloadReady.subscribe(ready => {
+        this.loggedIn = ready;
+      });
     }
-    if (this.stateService.currentTab.value === 'upload') {
+    if (this.loginConfig.server === DataType.Upload) {
       this.clientService.uploadLogout();
+      this.clientService.uploadReady.subscribe(ready => {
+        this.loggedIn = ready;
+      });
     }
-    this.titleService.setTitle('Login');
+    this.serverType = this.loginConfig.server === DataType.Download ? 'download.' : 'upload.';
     this.setLoginConfig();
   }
 
@@ -45,28 +56,21 @@ export class LoginFormComponent implements OnInit {
   }
 
   signIn() {
-    if (this.stateService.currentTab.value === 'download') {
-      this.clientService.downloadLogin(
-        { url: this.url, project: this.project, storage: sessionStorage },
-        { email: this.email, password: this.password }
-      )
-        .then(() => {
-          this.password = '';
-          this.loggedInConfig.emit({ url: this.url, project: this.project, email: this.email });
-        })
-        .catch(() => this.errorMsg = 'Download login attempt was unsuccessful');
-    }
-    if (this.stateService.currentTab.value === 'upload') {
-      this.clientService.uploadLogin(
-        { url: this.url, project: this.project, storage: sessionStorage },
-        { email: this.email, password: this.password }
-      )
-        .then(() => {
-          this.password = '';
-          this.loggedInConfig.emit({ url: this.url, project: this.project, email: this.email });
-        })
-        .catch(() => this.errorMsg = 'Upload login attempt was unsuccessful');
-    }
+    this.clientService.login(
+      { url: this.url, project: this.project, storage: sessionStorage },
+      { email: this.email, password: this.password },
+      this.loginConfig.server
+    )
+      .then(() => {
+        this.password = '';
+        this.loggedInConfig.emit({ url: this.url, project: this.project, email: this.email, server: this.loginConfig.server });
+      })
+      .catch(() => this.errorMsg = 'Login attempt was unsuccessful');
+  }
+
+  onLogout() {
+    this.loggedOut.emit(true);
+    this.titleService.setTitle('Login');
   }
 
 }

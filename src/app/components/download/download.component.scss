@@ -4,6 +4,10 @@
   margin: 20px auto;
   width: 100%;
 
+  .prompt {
+    margin: 0 auto -20px auto;
+  }
+
   .connection {
     display: flex;
     width: auto;
@@ -37,6 +41,16 @@
 
     .cb {
       margin: 5px 5px 0 0;
+    }
+  }
+
+  .save-options {
+    display: flex;
+    width: 500px;
+    margin: 16px auto;
+
+    button {
+      margin-left: auto;
     }
   }
 }

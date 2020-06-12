@@ -4,22 +4,6 @@
   margin: 20px auto;
   width: 100%;
 
-  .prompt {
-    margin: 0 auto -20px auto;
-  }
-
-  .connection {
-    display: flex;
-    width: auto;
-    border: 1px solid #666;
-    margin: 10px auto;
-
-    span {
-      padding: 10px 16px;
-      margin: auto;
-    }
-  }
-
   .results {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -49,8 +33,12 @@
     width: 500px;
     margin: 16px auto;
 
-    button {
+    .padding {
       margin-left: auto;
+    }
+
+    button{
+        margin-left: 10px;
     }
   }
 }

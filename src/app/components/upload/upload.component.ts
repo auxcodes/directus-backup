@@ -4,6 +4,7 @@ import { ClientService } from '../../services/directus/client.service';
 import { ProjectContentService } from '../../services/project-content.service';
 import { LoginConfig } from '../../shared/interfaces/login-config';
 import { DataType } from '../../shared/enums/data-type.enum';
+import { FileManagerService } from '../../services/utils/file-manager.service';
 
 @Component({
   selector: 'app-upload',
@@ -18,7 +19,8 @@ export class UploadComponent implements OnInit {
 
   constructor(
     private clientService: ClientService,
-    private contentService: ProjectContentService) { }
+    private contentService: ProjectContentService,
+    private fileService: FileManagerService) { }
 
   ngOnInit() {
     this.clientService.uploadReady.subscribe(ready => this.loggedIn = ready);
@@ -37,6 +39,10 @@ export class UploadComponent implements OnInit {
 
   onUpload() {
     console.log('Upload to server.');
+  }
+
+  onSave() {
+    this.fileService.saveToFile();
   }
 
   onLogout() {

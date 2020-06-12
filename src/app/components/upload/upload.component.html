@@ -13,6 +13,8 @@
       </ng-container>
     </div>
     <div class="upload-options">
-      <button (click)="onUpload()">Upload</button>
+      <span class="padding"></span>
+      <button class="upload-btn" (click)="onUpload()" [disabled]="!collections.length > 0 || !loggedIn">Upload</button>
+      <button class="save-btn" (click)="onSave()" [disabled]="!collections.length > 0">Save</button>
     </div>
   </div>

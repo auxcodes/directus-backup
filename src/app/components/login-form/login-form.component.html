@@ -1,12 +1,15 @@
-<section class="form-content" >
-  <div class="connection" *ngIf="loggedIn">
-    <span>{{url}}</span>
-    <span>{{project}}</span>
-    <span>{{email}}</span>
-    <button (click)="onLogout()">Logout</button>
+<div class="connection" *ngIf="loggedIn">
+  <span>{{url}}</span>
+  <span>{{project}}</span>
+  <span>{{email}}</span>
+  <button (click)="onLogout()">Logout</button>
+</div>
+<section class="form-content">
+  <div class="prompt" *ngIf="!loggedIn">
+    <input class="login-cb" type="checkbox" [checked]="loginCb" (change)="loginCb = !loginCb" />
+    <label>Login to Directus API server to {{serverType}}</label>
   </div>
-  <form (ngSubmit)="signIn()" #loginForm="ngForm" *ngIf="!loggedIn">
-    <span class="prompt">Login to Directus API server to {{serverType}}</span>
+  <form (ngSubmit)="signIn()" #loginForm="ngForm" *ngIf="!loggedIn && loginCb">
     <div class="row">
       <label>URL:</label>
       <input type="url"

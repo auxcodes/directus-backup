@@ -12,6 +12,8 @@ import { DataType } from '../../shared/enums/data-type.enum';
 })
 export class LoginFormComponent implements OnInit {
 
+  loginCb = false;
+
   url: string;
   project: string;
   email: string;
@@ -26,9 +28,7 @@ export class LoginFormComponent implements OnInit {
   @Output() loggedOut: EventEmitter<boolean> = new EventEmitter(); 
 
   constructor(
-    private clientService: ClientService,
-    private titleService: Title,
-    private stateService: PageStateService) {
+    private clientService: ClientService) {
 
   }
 
@@ -70,7 +70,8 @@ export class LoginFormComponent implements OnInit {
 
   onLogout() {
     this.loggedOut.emit(true);
-    this.titleService.setTitle('Login');
+    this.clientService.logout(this.loginConfig.server);
+    this.loginCb = false;
   }
 
 }

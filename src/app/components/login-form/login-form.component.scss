@@ -1,6 +1,6 @@
 .connection {
   display: flex;
-  width: auto;
+  width: max-content;
   border: 1px solid #666;
   margin: 10px auto;
 
@@ -12,21 +12,31 @@
 
 .form-content {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  max-width: 500px;
+  width: 100%;
+  margin: auto;
 
+  .prompt {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #e1e1e1;
+    width: 100%;
+
+    label {
+      padding: 10px;
+      margin: auto;
+    }
+
+    .login-cb {
+      margin: 2px 5px 0 10px;
+      width: min-content;
+    }
+  }
 
   form {
-    max-width: 500px;
     width: 100%;
     margin-top: 20px;
-
-    .prompt {
-      width: 100%;
-      display: block;
-      border-bottom: 1px solid #e1e1e1;
-      padding: 10px;
-      text-align: center;
-    }
   }
 
   .row {
@@ -37,7 +47,7 @@
     input, textarea {
       width: 100%;
       max-width: 500px;
-      padding: 12px 20px;
+      padding: 12px 12px;
       margin: 0;
       display: inline-block;
       border: 1px solid #e1e1e1;
@@ -59,7 +69,7 @@
       max-width: 100px;
       background-color: #0088ff;
       color: white;
-      padding: 10px 10px;
+      padding: 5px 10px;
       margin: 0 0 0 auto;
       border: none;
       cursor: pointer;

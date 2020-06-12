@@ -4,19 +4,32 @@
   margin: 20px auto;
   width: 100%;
 
-  .prompt {
-    margin: 0 auto -20px auto;
-  }
+  .open-file {
+    margin: auto;
+    width: 500px;
 
-  .connection {
-    display: flex;
-    width: auto;
-    border: 1px solid #666;
-    margin: 10px auto;
+    .prompt {
+      display: flex;
+      flex-direction: row;
+      border-bottom: 1px solid #e1e1e1;
+      width: 100%;
 
-    span {
-      padding: 10px 16px;
-      margin: auto;
+      label {
+        padding: 10px;
+        margin: auto;
+      }
+
+      .open-cb {
+        margin: 2px 5px 0 10px;
+        width: min-content;
+      }
+    }
+
+
+    input {
+      margin: 18px auto;
+      padding: 0 10px;
+      width: 100%;
     }
   }
 
@@ -41,16 +54,6 @@
 
     .cb {
       margin: 5px 5px 0 0;
-    }
-  }
-
-  .save-options {
-    display: flex;
-    width: 500px;
-    margin: 16px auto;
-
-    button {
-      margin-left: auto;
     }
   }
 }

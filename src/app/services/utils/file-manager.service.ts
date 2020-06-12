@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { saveAs } from 'file-saver';
 import { ProjectContentService } from '../../services/project-content.service';
-import { formatDate } from '@angular/common';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -10,16 +10,27 @@ export class FileManagerService {
 
   constructor(private contentService: ProjectContentService) { }
 
+  openFile(file) {
+    let project;
+    const reader = new FileReader();
+    reader.onload = progressEvent => {
+      project = reader.result;
+      this.contentService.downloadedProject.next(JSON.parse(project));
+    }
+    reader.readAsText(file);
+  }
+
   saveToFile() {
     const project = JSON.stringify(this.contentService.downloadedProject.value);
-    const filename = this.contentService.downloadedProject.value.name + '-' + this.fileDate();
+    const filename = this.contentService.downloadedProject.value.name.toUpperCase() + '_' + 'DirectusBackup' + '_' + this.fileDate() + '.json';
     const blob = new Blob([project], { type: 'text/plain' });
     saveAs(blob, filename);
   }
 
-  fileDate(): string{
-    const dateString = (Date.prototype.getFullYear() + Date.prototype.getMonth() + Date.prototype.getDate() + 
-                        Date.prototype.getHours() + ':' + Date.prototype.getMinutes() + ':' + Date.prototype.getSeconds()).toString() ;
+  private fileDate(): string{
+    const pipe = new DatePipe('en-US');
+    const date = Date.now();
+    const dateString = pipe.transform(date, 'yyyy-MM-dd_hhmmss');
     return dateString;
   }
 }

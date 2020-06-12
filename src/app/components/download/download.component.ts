@@ -13,6 +13,7 @@ import { DataType } from '../../shared/enums/data-type.enum';
 })
 export class DownloadComponent implements OnInit {
 
+  openFile = false;
   loggedIn = false;
   collections: Collection[] = [];
   allSelected = false;
@@ -28,6 +29,12 @@ export class DownloadComponent implements OnInit {
     this.clientService.downloadReady.subscribe(ready => this.loggedIn = ready);
     this.contentService.backupConfig.subscribe(config => {
       this.dlLoginConfig = config.downloadLogin;
+    });
+    this.contentService.downloadedProject.subscribe(project => {
+      if (project.collections) {
+        this.collections = project.collections;
+        this.contentService.selectedCollections.next(this.collections);
+      }
     });
   }
 
@@ -95,7 +102,8 @@ export class DownloadComponent implements OnInit {
     this.contentService.selectedCollections.next(this.collections);
   }
 
-  onSave() {
-    this.fileService.saveToFile();
+  onFileSelected(event) {
+    console.log('File selected: ', event);
+    this.fileService.openFile(event.target.files[0]);
   }
 }

@@ -1,20 +1,26 @@
 <div class="container">
   <app-login-form [loginConfig]="dlLoginConfig"
                   (loggedInConfig)="onLoggedIn($event)"
-                  (loggedOut)="onLogout($event)"></app-login-form>
+                  (loggedOut)="onLogout($event)"
+                  *ngIf="!openFile"></app-login-form>
+  <div class="open-file" *ngIf="!loggedIn">
+    <div class="prompt">
+        <input class="open-cb" type="checkbox" [checked]="openFile" (change)="openFile = !openFile" />
+        <label>Select a previously saved Directus project.</label>
+    </div>
+    <input *ngIf="openFile" type="file" id="file-selector" accept=".json" (change)="onFileSelected($event)" />
+  </div>
 </div>
-<div class="container" *ngIf="loggedIn">
+<div class="container" *ngIf="loggedIn || collections.length > 0">
   <div class="results">
-    <input class="title cb" type="checkbox" [checked]="allSelected" (change)="onSelectAll($event.target.checked)" />
+    <input class="title cb" type="checkbox" [checked]="allSelected" (change)="onSelectAll($event.target.checked)" [disabled]="!collections.length > 0" />
     <button class="title title-btn" (click)="onGetCollections()">Collections</button>
-    <button class="title title-btn" (click)="onGetItems()">Items</button>
+    <button class="title title-btn" (click)="onGetItems()" [disabled]="!collections.length > 0">Items</button>
     <ng-container id="collections" class="row" *ngFor="let collection of collections; let i = index">
       <input class="result cb" type="checkbox" [id]="collection.name" [checked]="collection.selected" (change)="onSelection($event.target.id)" />
       <span class="result">{{collection?.name}}</span>
       <span class="result">{{collection?.items ? collection?.items.length : collection?.error}}</span>
     </ng-container>
   </div>
-  <div class="save-options">
-    <button (click)="onSave()">Save</button>
-  </div>
+
 </div>

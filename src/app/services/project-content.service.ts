@@ -28,6 +28,7 @@ export class ProjectContentService {
     await this.collectionService.getCollections()
       .then(results => {
         collections = results;
+        console.log(results);
       })
       .catch(error => {
         console.error('Content Service - Error getting collections: ', error);

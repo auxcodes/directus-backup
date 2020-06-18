@@ -28,7 +28,8 @@ export class ItemsService {
         }
     }
 
-    async updateItem(collection: string, primaryKey: number, body: object) {
+  async updateItem(collection: string, primaryKey: number, body: object) {
+    console.log(collection, primaryKey, body);
         try {
             return this.clientService.client().updateItem(collection, primaryKey, body);
         }

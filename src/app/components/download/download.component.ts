@@ -18,6 +18,8 @@ export class DownloadComponent implements OnInit {
   collections: Collection[] = [];
   allSelected = false;
   dlLoginConfig: LoginConfig = { url: '', project: '', email: '', server: DataType.Download };
+  projectUrl = '';
+  projectName = '';
 
   constructor(
     private clientService: ClientService,
@@ -35,6 +37,9 @@ export class DownloadComponent implements OnInit {
         this.collections = project.collections;
         this.contentService.selectedCollections.next(this.collections);
       }
+      this.projectName = project.name;
+      this.projectUrl = project.url;
+      console.log('project: ', project);
     });
   }
 
@@ -42,6 +47,8 @@ export class DownloadComponent implements OnInit {
     console.log('dl logged in: ', loginConfig);
     this.contentService.backupConfig.getValue().downloadLogin = loginConfig;
     this.contentService.saveConfig();
+    this.projectName = loginConfig.project;
+    this.projectUrl = loginConfig.url;
     this.contentService.downloadedProject.next({ name: loginConfig.project, url: loginConfig.url });
   }
 
@@ -50,9 +57,9 @@ export class DownloadComponent implements OnInit {
     this.contentService.collections()
       .then(result => {
         result.data.map(collection => {
-          this.collections.push({ name: collection.collection, fields: collection.fields, selected: false, items: null, error: '-' });
+          this.collections.push({ name: collection.collection, settings: collection, selected: false, items: null, error: '-' });
         });
-
+        this.updateProjectContent();
       })
       .catch(error => console.error('Error getting collections: ', error));
   }
@@ -91,10 +98,6 @@ export class DownloadComponent implements OnInit {
     this.updateProjectContent();
   }
 
-  updateProjectContent() {
-    this.contentService.selectedCollections.next(this.collections);
-    this.contentService.downloadedProject.getValue().collections = this.collections;
-  }
 
   onLogout() {
     this.collections = [];
@@ -105,5 +108,10 @@ export class DownloadComponent implements OnInit {
   onFileSelected(event) {
     console.log('File selected: ', event);
     this.fileService.openFile(event.target.files[0]);
+  }
+
+  private updateProjectContent() {
+    this.contentService.selectedCollections.next(this.collections);
+    this.contentService.downloadedProject.next({ name: this.projectName, url: this.projectUrl, collections: this.collections });
   }
 }

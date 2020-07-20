@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { saveAs } from 'file-saver';
 import { ProjectContentService } from '../../services/project-content.service';
 import { DatePipe } from '@angular/common';
+import { Project } from '../../shared/interfaces/project';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,9 @@ export class FileManagerService {
   }
 
   saveToFile() {
-    const project = JSON.stringify(this.contentService.downloadedProject.value);
+    const project = this.collectionFilter(this.contentService.downloadedProject.value);
     const filename = this.contentService.downloadedProject.value.name.toUpperCase() + '_' + 'DirectusBackup' + '_' + this.fileDate() + '.json';
-    const blob = new Blob([project], { type: 'text/plain' });
+    const blob = new Blob([JSON.stringify(project)], { type: 'text/plain' });
     saveAs(blob, filename);
   }
 
@@ -32,5 +33,11 @@ export class FileManagerService {
     const date = Date.now();
     const dateString = pipe.transform(date, 'yyyy-MM-dd_hhmmss');
     return dateString;
+  }
+
+  private collectionFilter(project: Project): Project {
+    const result = project;
+    result.collections = project.collections.filter(collection => collection.selected)
+    return result;
   }
 }

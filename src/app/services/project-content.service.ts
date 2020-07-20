@@ -23,6 +23,10 @@ export class ProjectContentService {
     private itemService: ItemsService
   ) { }
 
+  async projectInfo() {
+    // get project information
+  }
+
   async collections(): Promise<any> {
     let collections;
     await this.collectionService.getCollections()
